@@ -1,0 +1,28 @@
+// app.js
+const express = require("express");
+const app = express();
+const PORT = process.env.PORT || 3001;
+const path = require("path");
+const db = require("./database.json");
+
+// Serve static files from the "public" directory
+app.use(express.static(path.join(__dirname, "public")));
+app.use(express.json());
+
+// Route for root (optional if using index.html as default)
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+app.get("/documents", (req, res) => {
+  const { name } = req.query;
+  if (name && name in db) {
+    res.json(db[name]);
+  } else {
+    res.status(400).json({ error: "please provide a valid username" });
+  }
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running at http://localhost:${PORT}`);
+});
