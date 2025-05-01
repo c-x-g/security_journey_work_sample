@@ -1,5 +1,6 @@
 const app = document.getElementById("app");
 const usernames = ["Bob", "Alice"];
+const url = window.location.origin;
 
 let username = "";
 let hasAppended = false;
@@ -43,7 +44,6 @@ function logout() {
 function getDocument() {
   if (hasAppended) return;
   hasAppended = true;
-  const url = window.location.origin;
   fetch(`${url}/documents?name=${username}`).then((res) => {
     res.json().then((res) => {
       Object.keys(res).forEach((key) => {
