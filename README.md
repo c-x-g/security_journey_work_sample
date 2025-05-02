@@ -129,9 +129,11 @@ Newly added in app.js are a pair of token functions, one to create a token repre
 <p><b>Token Secret</b></p> 
 <img src="instruction_images/token_secret.png" width="250"/>
 
+Additionally script.js now includes additional code to store a token received from the server, and use it for subsequent requests to control access to documents
+
 For simplicity I have expressed the token as a concatenation of the user's name and secret and the decode method as matching this pattern and extracting the user's name from the pattern
 
-To determine proper access I have also added OwnerId fields to each document in database.json, representing who has the privilege to access the specific document
+To determine proper access I have also added **OwnerId** fields to each document in database.json, representing who has the privilege to access the specific document
 
 <img src="instruction_images/ownerIds.png" width="250"/>
 
@@ -144,7 +146,7 @@ The added token is now expected as a header in the **/documents** handler and ac
 - if the token is poorly formatted, return a 401 status and inform client of invalid token
   <img src="instruction_images/bad_token_request.png" width="250"/>
 
-- if the token is satisfactory, extract the client's name and lookup their id. Additionally look up the document's OwnerId and ensure that the two match, if they do then the client has appropriate access to the document and it can be returned, however if there is a mismatch, return a 403 access denied status
+- if the token is satisfactory, extract the client's name and lookup their id. Additionally look up the document's OwnerId\*\* and ensure that the two match, if they do then the client has appropriate access to the document and it can be returned, however if there is a mismatch, return a 403 access denied status
 
 <p><b>Alice can use her token to access her own information</b></p> 
 <img src="instruction_images/good_token_request.png" width="250"/>
@@ -152,9 +154,11 @@ The added token is now expected as a header in the **/documents** handler and ac
 <p><b>Notice how Alice cannot use her token to access Bob's information</b></p> 
 <img src="instruction_images/access_denied_request.png" width="250"/>
 
-Additionally script.js now includes additional code to store a token received from the server, and use it for subsequent requests to control access to documents
-
-Warning:
-The token shown here is not intended to be directly accessed and would be secured in a real application is primarily for demonstration purposes,
+**Warning:**
+The token shown here is not intended to be directly accessed and should be secured in a real application. Using the token directly like this is exclusively for demonstration purposes
 
 ### Summary
+
+**IDOR** is a vulnerability where the server is compromised and an attacker can directly retrieve documents that don't belong to them from it.
+
+To prevent **IDOR**, the server should authenticate every client, identify the client Id, and confirm that the client Id has the privilege to access the document it is requesting by confirming that the client Id is indeed the owner of the document
