@@ -146,7 +146,7 @@ The added token is now expected as a header in the **/documents** handler and ac
 - if the token is poorly formatted, return a 401 status and inform client of invalid token
   <img src="instruction_images/bad_token_request.png" width="250"/>
 
-- if the token is satisfactory, extract the client's name and lookup their id. Additionally look up the document's OwnerId\*\* and ensure that the two match, if they do then the client has appropriate access to the document and it can be returned, however if there is a mismatch, return a 403 access denied status
+- if the token is satisfactory, extract the client's name and lookup their id. Additionally look up the document's **OwnerId** and ensure that the two match, if they do then the client has appropriate access to the document and it can be returned, however if there is a mismatch, return a 403 access denied status
 
 <p><b>Alice can use her token to access her own information</b></p> 
 <img src="instruction_images/good_token_request.png" width="250"/>
