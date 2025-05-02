@@ -2,12 +2,14 @@ const app = document.getElementById("app");
 const url = window.location.origin;
 
 let username = "";
+let userId = -1;
 let hasAppended = false;
 let loginText = "Please login";
 
 function render() {
   username = localStorage.getItem("username");
-  if (username && username !== "invalid") {
+  userId = localStorage.getItem("userId");
+  if (username && userId != -1) {
     app.innerHTML = `
           <h1>Welcome, ${username}!</h1>
           <button onclick="getDocument()">View Personal Information</button>
@@ -29,12 +31,10 @@ function login() {
   if (name) {
     fetch(`${url}/user?name=${name}`).then((res) => {
       res.json().then((res) => {
-        const { id } = res;
-        if (id !== -1) {
-          localStorage.setItem("username", name);
-        } else {
-          localStorage.setItem("username", "invalid");
-        }
+        const { id, token } = res;
+        localStorage.setItem("username", name);
+        localStorage.setItem("userId", id);
+        localStorage.setItem("token", token);
         render();
       });
     });
@@ -61,10 +61,12 @@ function getDocument() {
   }).then((res) => {
     res.json().then((res) => {
       Object.keys(res).forEach((key) => {
-        const li = document.createElement("li");
-        li.setAttribute("style", "list-style-type:none;");
-        li.textContent = `${key}: ${res[key]}`;
-        app.appendChild(li);
+        if (key !== "OwnerId") {
+          const li = document.createElement("li");
+          li.setAttribute("style", "list-style-type:none;");
+          li.textContent = `${key}: ${res[key]}`;
+          app.appendChild(li);
+        }
       });
     });
   });

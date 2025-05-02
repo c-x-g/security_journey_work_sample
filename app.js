@@ -55,7 +55,7 @@ app.get("/documents", (req, res) => {
 });
 
 function createToken(name) {
-  return { token: `${name}-${SECRET}` };
+  return `${name}-${SECRET}`;
 }
 
 function decodeToken(token) {
