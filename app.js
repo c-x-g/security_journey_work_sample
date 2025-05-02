@@ -1,7 +1,7 @@
-// app.js
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3001;
+const SECRET = process.env.SECRET || "top-secret";
 const path = require("path");
 const db = require("./database.json");
 
@@ -16,11 +16,20 @@ app.get("/", (req, res) => {
 
 app.get("/documents", (req, res) => {
   const { name } = req.query;
+  // get token here from headers
+  console.log(req.headers);
+  const bearerToken = req.headers["authorization"];
+  console.log(bearerToken);
   if (name && name in db) {
     res.json(db[name]);
   } else {
     res.status(400).json({ error: "please provide a valid username" });
   }
+});
+
+app.get("/token", (req, res) => {
+  const { name } = req.query;
+  res.json({ token: `${name}-${SECRET}` });
 });
 
 app.listen(PORT, () => {

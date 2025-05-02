@@ -1,5 +1,6 @@
 const app = document.getElementById("app");
 const usernames = ["Bob", "Alice"];
+const url = window.location.origin;
 
 let username = "";
 let hasAppended = false;
@@ -27,6 +28,11 @@ function render() {
 function login() {
   const name = document.getElementById("nameInput").value.trim();
   if (name) {
+    fetch(`${url}/token?name=${name}`).then((res) => {
+      res.json().then((res) => {
+        localStorage.setItem("token", res.token);
+      });
+    });
     localStorage.setItem("username", name);
     render();
   }
@@ -43,8 +49,13 @@ function logout() {
 function getDocument() {
   if (hasAppended) return;
   hasAppended = true;
-  const url = window.location.origin;
-  fetch(`${url}/documents?name=${username}`).then((res) => {
+  const token = localStorage.getItem("token");
+  // pass token into the headers
+  fetch(`${url}/documents?name=${username}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => {
     res.json().then((res) => {
       Object.keys(res).forEach((key) => {
         const li = document.createElement("li");
