@@ -29,12 +29,6 @@ app.get("/user", (req, res) => {
 
 app.get("/documents", (req, res) => {
   const { name } = req.query;
-  // get token here from headers
-  console.log(req.headers);
-  const bearerToken = req.headers["authorization"];
-  console.log(bearerToken);
-  if (name && name in db) {
-    res.json(db[name]);
   if (name && name in db["Documents"]) {
     // get token here from headers
     const token = req.headers["authorization"];
