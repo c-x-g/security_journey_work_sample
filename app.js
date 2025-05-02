@@ -33,6 +33,10 @@ app.get("/documents", (req, res) => {
     res.json(db[name]);
   if (name && name in db["Documents"]) {
     res.json(db["Documents"][name]);
+  // get token here from headers
+  const bearerToken = req.headers["authorization"];
+  if (name && name in db["Documents"]) {
+    res.json(db["Documents"][name]);
   } else {
     res.status(400).json({ error: "please provide a valid username" });
   }

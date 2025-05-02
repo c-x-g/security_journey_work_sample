@@ -52,6 +52,7 @@ function logout() {
 function getDocument() {
   if (hasAppended) return;
   hasAppended = true;
+  fetch(`${url}/documents?name=${username}`).then((res) => {
   const token = localStorage.getItem("token");
   // pass token into the headers
   fetch(`${url}/documents?name=${username}`, {
@@ -59,6 +60,7 @@ function getDocument() {
       Authorization: `Bearer ${token}`,
     },
   }).then((res) => {
+
     res.json().then((res) => {
       Object.keys(res).forEach((key) => {
         const li = document.createElement("li");
