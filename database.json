@@ -8,17 +8,19 @@
     }
   },
   "Documents": {
-    "Bob": {
-      "Name": "Bob Smith",
-      "Age": 37,
-      "Address": "1 Any Court, Arkansas USA 56789",
-      "SSN": "111-222-3333"
-    },
     "Alice": {
+      "OwnerId": 1,
       "Name": "Alice Jones",
       "Age": 25,
       "Address": "1 Any Street, Alaska USA 12345",
       "SSN": "123-456-7890"
+    },
+    "Bob": {
+      "OwnerId": 2,
+      "Name": "Bob Smith",
+      "Age": 37,
+      "Address": "1 Any Court, Arkansas USA 56789",
+      "SSN": "111-222-3333"
     }
   }
 }

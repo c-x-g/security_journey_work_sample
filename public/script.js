@@ -31,9 +31,10 @@ function login() {
   if (name) {
     fetch(`${url}/user?name=${name}`).then((res) => {
       res.json().then((res) => {
-        const { id } = res;
+        const { id, token } = res;
         localStorage.setItem("username", name);
         localStorage.setItem("userId", id);
+        localStorage.setItem("token", token);
         render();
       });
     });
@@ -51,13 +52,21 @@ function logout() {
 function getDocument() {
   if (hasAppended) return;
   hasAppended = true;
-  fetch(`${url}/documents?name=${username}`).then((res) => {
+  const token = localStorage.getItem("token");
+  // pass token into the headers
+  fetch(`${url}/documents?name=${username}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => {
     res.json().then((res) => {
       Object.keys(res).forEach((key) => {
-        const li = document.createElement("li");
-        li.setAttribute("style", "list-style-type:none;");
-        li.textContent = `${key}: ${res[key]}`;
-        app.appendChild(li);
+        if (key !== "OwnerId") {
+          const li = document.createElement("li");
+          li.setAttribute("style", "list-style-type:none;");
+          li.textContent = `${key}: ${res[key]}`;
+          app.appendChild(li);
+        }
       });
     });
   });
