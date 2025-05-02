@@ -10,24 +10,24 @@ app.use(express.json());
 
 // Route for root (optional if using index.html as default)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  return res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 app.get("/user", (req, res) => {
   const { name } = req.query;
   if (name && name in db["Users"]) {
-    res.json(db["Users"][name]);
+    return res.json(db["Users"][name]);
   } else {
-    res.json({ id: -1 });
+    return res.json({ id: -1 });
   }
 });
 
 app.get("/documents", (req, res) => {
   const { name } = req.query;
   if (name && name in db["Documents"]) {
-    res.json(db["Documents"][name]);
+    return res.json(db["Documents"][name]);
   } else {
-    res.status(400).json({ error: "please provide a valid username" });
+    return res.status(400).json({ error: "please provide a valid username" });
   }
 });
 
