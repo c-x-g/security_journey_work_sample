@@ -38,7 +38,7 @@ app.get("/documents", (req, res) => {
       });
     const id = decodeToken(token);
     if (id === -1) {
-      return res.status(401).send("invalid token");
+      return res.status(401).send({ error: "invalid token" });
     }
 
     if (name && name in db["Documents"]) {
