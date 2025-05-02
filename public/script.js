@@ -1,5 +1,4 @@
 const app = document.getElementById("app");
-const usernames = ["Bob", "Alice"];
 const url = window.location.origin;
 
 let username = "";
@@ -8,7 +7,7 @@ let loginText = "Please login";
 
 function render() {
   username = localStorage.getItem("username");
-  if (username && usernames.includes(username)) {
+  if (username && username !== "invalid") {
     app.innerHTML = `
           <h1>Welcome, ${username}!</h1>
           <button onclick="getDocument()">View Personal Information</button>
@@ -28,13 +27,17 @@ function render() {
 function login() {
   const name = document.getElementById("nameInput").value.trim();
   if (name) {
-    fetch(`${url}/token?name=${name}`).then((res) => {
+    fetch(`${url}/user?name=${name}`).then((res) => {
       res.json().then((res) => {
-        localStorage.setItem("token", res.token);
+        const { id } = res;
+        if (id !== -1) {
+          localStorage.setItem("username", name);
+        } else {
+          localStorage.setItem("username", "invalid");
+        }
+        render();
       });
     });
-    localStorage.setItem("username", name);
-    render();
   }
 }
 

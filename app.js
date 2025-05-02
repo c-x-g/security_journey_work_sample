@@ -14,6 +14,15 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+app.get("/user", (req, res) => {
+  const { name } = req.query;
+  if (name && name in db["Users"]) {
+    res.json(db["Users"][name]);
+  } else {
+    res.json({ id: -1 });
+  }
+});
+
 app.get("/documents", (req, res) => {
   const { name } = req.query;
   // get token here from headers
@@ -22,6 +31,8 @@ app.get("/documents", (req, res) => {
   console.log(bearerToken);
   if (name && name in db) {
     res.json(db[name]);
+  if (name && name in db["Documents"]) {
+    res.json(db["Documents"][name]);
   } else {
     res.status(400).json({ error: "please provide a valid username" });
   }
